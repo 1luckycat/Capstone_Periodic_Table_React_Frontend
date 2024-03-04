@@ -1,0 +1,42 @@
+.periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 85px);
+    grid-template-rows: repeat(10, 75px);
+    position: absolute;
+    margin-top: 90px;
+    padding: 30px;
+    gap: 1px;
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+}
+
+.element {
+    border-style: solid;
+}
+
+.name {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.number {
+    display: flex;
+    align-items: top;
+    justify-content: start;
+}
+
+.symbol {
+    display: flex;
+    justify-content: center;
+    font-size: larger;
+}
+
+.title {
+    margin-top: 80px;
+    font-size: 50px;
+    margin-left: 500px;
+    position: absolute;
+    
+}
