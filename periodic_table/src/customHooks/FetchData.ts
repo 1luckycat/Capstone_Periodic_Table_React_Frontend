@@ -16,8 +16,9 @@ export interface ElementProps {
     summary: string,
     boil: number,
     melt: number,
-    notes?: string,
-    user_id?: string
+    category: string,
+    notes: string,
+    user_id: string
 
 }
 

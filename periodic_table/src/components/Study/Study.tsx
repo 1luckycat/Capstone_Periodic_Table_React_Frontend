@@ -1,7 +1,7 @@
 import * as _React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { getDatabase, ref, push } from 'firebase/database';
+import { getDatabase, ref, push, onValue, off, remove, update } from 'firebase/database';
 import {
     Accordion,
     AccordionSummary, 
@@ -30,6 +30,8 @@ import { useGetElement, ElementProps } from '../../customHooks';
 import { NavBar, InputText } from '../sharedComponents';
 import { theme } from '../../Theme/themes';
 import { MessageType } from '../Auth';
+import { serverCalls } from '../../api';
+
 
 
 export const studyStyles = {
@@ -65,10 +67,11 @@ export const studyStyles = {
     },
     button: {
         color: 'white',
-        borderRadius: '50px',
+        borderRadius: '10px',
         height: '45px',
         width: '250px',
-        marginTop: '10px'
+        marginTop: '20px',
+        backgroundColor: theme.palette.info.main
     }, 
     stack: {
         width: '75%',
@@ -93,12 +96,87 @@ export const studyStyles = {
 
 export const Study = () => {
 
-    const { elementData } = useGetElement()
+    const { elementData } = useGetElement();
     const [ currentElement, setCurrentElement ] = useState<ElementProps>();
     const [ studyOpen, setStudyOpen ] = useState(false);
-
+    const db = getDatabase();
+    const [ open, setOpen] = useState(false);
+    const [ message, setMessage ] = useState<string>();
+    const [ messageType, setMessageType ] = useState<MessageType>();
+    const userId = localStorage.getItem('uuid');
+    const elementRef = ref(db, `study/${userId}/`);
 
     console.log(elementData)
+
+    // useEffect(() => {
+    //     onValue(elementRef, (snapshot) => {
+    //         const data = snapshot.val()
+    //         console.log(data)
+    //         let elementList = []
+
+    //         if (data) {
+    //             for (let [key, value] of Object.entries(data)) {
+    //                 let elementItem = value as ElementProps
+    //                 elementItem['element_id'] = key
+    //                 elementList.push(elementItem)
+    //             }
+    //         }
+
+    //         setCurrentElement(elementList as ElementProps[])
+    //     })
+
+    //     return () => {
+    //         off(elementRef)
+    //     }
+    // }, [])
+    // console.log(currentElement)
+
+
+
+
+    const updateNotes = async ( elementItem: ElementProps ) => {
+        const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
+
+        update(eleRef, {
+            notes: elementItem.notes
+        })
+        .then(() => {
+            setMessage(`Successfully updated your Study Guide.`)
+            setMessageType('success')
+            setOpen(true)
+        })
+        .then(() => { setTimeout(() => window.location.reload(), 1500)})
+        .catch((error) => {
+            setMessage(error.message)
+            setMessageType('error')
+            setOpen(true)
+        })
+    }
+
+
+
+    const deleteElement = async ( elementItem: ElementProps ) => {
+        const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
+
+        remove(eleRef)
+        .then(() => {
+            setMessage('Successfully deleted item from Study Guide')
+            setMessageType('success')
+            setOpen(true)
+        })
+        .then(() => { setTimeout( () => window.location.reload(), 1500)})
+        .catch ((error) => {
+            setMessage(error.message)
+            setMessageType('error')
+            setOpen(true)
+        })
+
+    }
+
+
+
+
+
 
     return (
         <Box sx={ studyStyles.main }>
@@ -108,10 +186,10 @@ export const Study = () => {
             </Typography>
             {/* container spacing={3} */}
             <Grid className="container" container spacing={3} sx={ studyStyles.grid }>
-                { elementData.map(( element: ElementProps, index: number ) => (
+                { elementData?.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
                         <Card sx={ studyStyles.card }>
-                            <DeleteForeverIcon />
+                            <DeleteForeverIcon onClick={() => deleteElement(element)}/>
                             <CardContent>
                                 <Stack
                                     direction = 'column'
@@ -134,8 +212,15 @@ export const Study = () => {
                                                 <Typography><strong>Atomic Mass:</strong> {element.atomic_mass}</Typography>
                                                 <Typography><strong>Boiling Point</strong>: {element.boil}</Typography>
                                                 <Typography><strong>Melting Point:</strong> {element.melt}</Typography>
+                                                <Typography><strong>Category:</strong> {element.category}</Typography>
                                                 <Typography><strong>Summary:</strong> {element.summary}</Typography>
-                                                <TextField></TextField>
+                                                <TextField 
+                                                variant='outlined' 
+                                                multiline={true} 
+                                                rows={3} 
+                                                fullWidth
+                                                label="Notes"
+                                                ></TextField>
                                             </AccordionDetails>
                                         </Accordion>
                                     </Stack>
@@ -143,7 +228,8 @@ export const Study = () => {
                                         variant = 'contained'
                                         size = 'medium'
                                         sx={ studyStyles.button }
-                                        onClick = { () => { setStudyOpen(true); setCurrentElement(element) }}
+                                        onClick = { () => updateNotes(element)}
+                                        // onClick = { () => { setStudyOpen(true); setCurrentElement(element) }}
                                     >
                                         Update Notes
                                     </Button>
@@ -155,6 +241,15 @@ export const Study = () => {
 
                 ))}
             </Grid>
+            <Snackbar
+                open={open}
+                autoHideDuration={1500}
+                onClose = {() => setOpen(false)}
+            >
+                <Alert severity={messageType}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

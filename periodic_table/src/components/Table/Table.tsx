@@ -31,19 +31,22 @@ interface AddElementProps {
 
 const AddToStudy = (study: AddElementProps) => {
     const db = getDatabase();
-    const [ open, setOpen ] = useState(false)
-    const [ message, setMessage ] = useState<string>()
-    const [ messageType, setMessageType ] = useState<MessageType>()
-    const { register, handleSubmit } = useForm<SubmitProps>()
+    const [ open, setOpen ] = useState(false);
+    const [ message, setMessage ] = useState<string>();
+    const [ messageType, setMessageType ] = useState<MessageType>();
+    const { register, handleSubmit } = useForm<SubmitProps>();
     let myElement = study.addElement
 
-    const onSubmit: SubmitHandler<SubmitProps> = async (data: SubmitProps, event: any) => {
+
+    const onSubmit: SubmitHandler<SubmitProps> = async (data, event) => {
         if (event) event.preventDefault();
 
         const userId = localStorage.getItem('uuid')
-        const addEle = ref(db, `studyguide/${userId}/`)
+        const addEle = ref(db, `study/${userId}/`)
 
-        push(addEle, myElement)
+        myElement.notes ? myElement.notes = data.notes : ""
+
+    push(addEle, myElement)
         .then((_newAddEle) => {
             setMessage(`Successfully added element ${myElement.name} to your study guide.`)
             setMessageType('success')
@@ -57,6 +60,8 @@ const AddToStudy = (study: AddElementProps) => {
             setMessageType('error')
             setOpen(true)
         })
+
+
     }
 
 
@@ -64,8 +69,8 @@ const AddToStudy = (study: AddElementProps) => {
         <Box>
             <form onSubmit = {handleSubmit(onSubmit)}>
                 <Box>
-                    <label htmlFor='notes'>Would you like to add {myElement.name} to your study guide?</label>
-                    <InputText {...register('notes')} name='notes' placeholder='Enter notes'/>
+                    <label htmlFor='notes'>Adding {myElement.name} to your study guide!  Would you like to add notes as well?</label>
+                    <InputText {...register('notes')} name='notes' placeholder='Enter notes here or press submit to add without notes'/>
                 </Box>
                 <Button type='submit'>Submit</Button>
             </form>
@@ -106,6 +111,7 @@ export const Table = () => {
     const [ currentStudy, setCurrentStudy] = useState<ElementProps>();
     const [ studyOpen, setStudyOpen ] = useState(false)
 
+    
     const handleClick = () => {
         console.log('Test test');
     }
@@ -120,7 +126,7 @@ export const Table = () => {
                 { elementTableData.map((element) => (
                 <div className = "element" key={element.name} style={{
                     gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[[element.category]]}} 
-                    onClick={handleClick}
+                    onClick={()=> {setStudyOpen(true); setCurrentStudy(element)}}
                     
                     > 
                     <small className="number">{element.atomic_number}</small>
