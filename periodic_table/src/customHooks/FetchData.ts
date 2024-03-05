@@ -50,7 +50,8 @@ export interface ElementTableProps {
     symbol: string,
     atomic_number: number,
     xpos: number,
-    ypos: number
+    ypos: number,
+    category: string
 }
 
 interface GetElementTableProps {

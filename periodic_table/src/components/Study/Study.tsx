@@ -1,5 +1,7 @@
 import * as _React from 'react';
 import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { getDatabase, ref, push } from 'firebase/database';
 import {
     Accordion,
     AccordionSummary, 
@@ -21,7 +23,6 @@ import {
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useForm, SubmitHandler } from 'react-hook-form';
 
 
 // internal imports
@@ -47,7 +48,8 @@ export const studyStyles = {
         marginTop: '40px',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        
         
     },
     card: {
@@ -77,6 +79,11 @@ export const studyStyles = {
         marginTop: '100px',
         display: 'flex',
         justifyContent: 'center'
+    },
+    container: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 }
 
@@ -99,7 +106,8 @@ export const Study = () => {
             <Typography variant='h4' sx={ studyStyles.typography }>
                 Your Study Guide
             </Typography>
-            <Grid container spacing={3} sx={ studyStyles.grid }>
+            {/* container spacing={3} */}
+            <Grid className="container" container spacing={3} sx={ studyStyles.grid }>
                 { elementData.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
                         <Card sx={ studyStyles.card }>

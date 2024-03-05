@@ -13,6 +13,8 @@
 
 .element {
     border-style: solid;
+    transition: transform 0.2s ease;
+
 }
 
 .name {
@@ -40,3 +42,9 @@
     position: absolute;
     
 }
+
+.element:hover {
+    color: white;
+    transform: translateY(-10px);
+}
+
