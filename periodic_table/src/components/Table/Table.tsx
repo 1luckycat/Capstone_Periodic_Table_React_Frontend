@@ -24,7 +24,7 @@ export interface SubmitProps {
     notes: string
 }
 
-interface AddElementProps {
+export interface AddElementProps {
     addElement: ElementProps
 }
 
@@ -41,26 +41,32 @@ const AddToStudy = (study: AddElementProps) => {
     const onSubmit: SubmitHandler<SubmitProps> = async (data, event) => {
         if (event) event.preventDefault();
 
-        const userId = localStorage.getItem('uuid')
-        const addEle = ref(db, `study/${userId}/`)
+    //     const userId = localStorage.getItem('uuid')
+    //     const addEle = ref(db, `study/${userId}/`)
 
-        myElement.notes ? myElement.notes = data.notes : ""
+    //     myElement.notes ? myElement.notes = data.notes : ""
 
-    push(addEle, myElement)
-        .then((_newAddEle) => {
-            setMessage(`Successfully added element ${myElement.name} to your study guide.`)
-            setMessageType('success')
-            setOpen(true)
-        })
-        .then(() => {
-            setTimeout(() => window.location.reload(), 1500)
-        })
-        .catch((error) => {
-            setMessage(error.message)
-            setMessageType('error')
-            setOpen(true)
-        })
-
+    // push(addEle, myElement)
+    //     .then((_newAddEle) => {
+    //         setMessage(`Successfully added element ${myElement.name} to your study guide.`)
+    //         setMessageType('success')
+    //         setOpen(true)
+    //     })
+    //     .then(() => {
+    //         setTimeout(() => window.location.reload(), 1500)
+    //     })
+    //     .catch((error) => {
+    //         setMessage(error.message)
+    //         setMessageType('error')
+    //         setOpen(true)
+    //     })
+        console.log(data)
+        
+        // sending off as body 
+        const createElement = {
+            "name": study.addElement.name,
+            "notes": data.notes
+        }
 
     }
 
@@ -111,10 +117,7 @@ export const Table = () => {
     const [ currentStudy, setCurrentStudy] = useState<ElementProps>();
     const [ studyOpen, setStudyOpen ] = useState(false)
 
-    
-    const handleClick = () => {
-        console.log('Test test');
-    }
+
 
 
     return (
@@ -126,7 +129,7 @@ export const Table = () => {
                 { elementTableData.map((element) => (
                 <div className = "element" key={element.name} style={{
                     gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[[element.category]]}} 
-                    onClick={()=> {setStudyOpen(true); setCurrentStudy(element)}}
+                    onClick={()=> {setStudyOpen(true); setCurrentStudy(element as ElementProps)}}
                     
                     > 
                     <small className="number">{element.atomic_number}</small>

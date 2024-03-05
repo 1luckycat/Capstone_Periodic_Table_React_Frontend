@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 
 // internal imports
 import { serverCalls } from '../api';
-import { serverCalls2 } from '../api';
 
 export interface ElementProps {
     element_id: string,
@@ -17,8 +16,10 @@ export interface ElementProps {
     boil: number,
     melt: number,
     category: string,
-    notes: string,
-    user_id: string
+    notes?: string,
+    user_id?: string,
+    xpos: number,
+    ypos: number,
 
 }
 
@@ -65,7 +66,7 @@ export const useGetElementTable = (): GetElementTableProps => {
     const [ elementTableData, setElementTableData ] = useState<ElementTableProps[]>([])
 
     const handleDataFetch = async () => {
-        const result = await serverCalls2.getElementTable()
+        const result = await serverCalls.getElementTable()
 
         setElementTableData(result)
     }
