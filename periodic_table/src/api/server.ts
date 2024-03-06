@@ -5,7 +5,7 @@ import { AddProps } from "../components/Study";
 let accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwOTU3NjY1NywianRpIjoiMmQxZmE5YTYtMThhNS00ZTBiLTg3NjUtMzdkMmY2YWU1Yzc4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IlBlcmlvZGljIFRhYmxlIDIwMjQiLCJuYmYiOjE3MDk1NzY2NTcsImNzcmYiOiIzYzc4MGI1Zi03MWQyLTRhYmYtYmI1Zi01OWM2ZWRiYjY4MDQiLCJleHAiOjE3NDExMTI2NTd9.NqtcLaJJyjGcGWDn80mvK08TesnlRVt7Ozcmnq4pSQo"
 let userId = localStorage.getItem('uuid')
 
-type PartialElementProps = Partial<ElementProps>
+export type PartialElementProps = Partial<ElementProps>
 
 
 export const serverCalls = {

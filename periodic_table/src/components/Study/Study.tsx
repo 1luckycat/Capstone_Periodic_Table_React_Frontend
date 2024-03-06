@@ -1,7 +1,7 @@
 import * as _React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { getDatabase, ref, push, onValue, off, remove, update } from 'firebase/database';
+// import { getDatabase, ref } from 'firebase/database';
 import {
     Accordion,
     AccordionSummary, 
@@ -13,12 +13,12 @@ import {
     Button,
     Dialog,
     DialogContent,
-    DialogContentText,
     Stack,
     Typography,
     Snackbar,
     Alert,
     Divider,
+    DialogActions,
 } from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -30,9 +30,8 @@ import { useGetElement, ElementProps } from '../../customHooks';
 import { NavBar, InputText } from '../sharedComponents';
 import { theme } from '../../Theme/themes';
 import { MessageType } from '../Auth';
-import { serverCalls } from '../../api';
+import { serverCalls, PartialElementProps } from '../../api';
 import { SubmitProps } from '../Table';
-
 
 
 export const studyStyles = {
@@ -99,131 +98,80 @@ export interface AddProps {
 }
 
 
+const UpdateNotes = ( element: PartialElementProps ) => {
+    const [ openAlert, setOpen ] = useState(false)
+    const [ message, setMessage ] = useState<string>()
+    const [ messageType, setMessageType ] = useState<MessageType>()
+    const { register, handleSubmit } = useForm<SubmitProps>({})
+ 
+
+    const onSubmit: SubmitHandler<SubmitProps> = async (data, event) => {
+        if (event) event.preventDefault();
+
+        const updateData = {
+            "notes": data.notes
+        }
+
+        console.log(element.element_id)
+
+        const response = await serverCalls.updateElement(element.element_id as string, updateData)
+
+        if ( response.status === 200){
+            setMessage('Successfully updated notes!')
+            setMessageType('success')
+            setOpen(true)
+            setTimeout(() => window.location.reload(), 1500)
+        } else {
+            setMessage(response.message)
+            setMessageType('error')
+            setOpen(true)
+        }
+    }
+
+    return (
+        <Box sx={{ padding: '20px'}}>
+            <form onSubmit = {handleSubmit(onSubmit)}>
+                <Box>
+                    <label htmlFor='notes'>Update Notes Here</label>
+                    <InputText {...register('notes')} name='notes' placeholder='Enter notes here' />
+                </Box>
+                <Button type='submit'>Update Notes</Button>
+            </form>
+        <Snackbar
+            open={openAlert}
+            autoHideDuration={1500}
+            onClose={() => setOpen(false)}
+        >
+            <Alert severity = {messageType}>
+                {message}
+            </Alert>
+
+        </Snackbar>
+        </Box>
+    )
+}
+
+
+
 
 export const Study = () => {
 
     const { elementData } = useGetElement();
-    const [ currentElement, setCurrentElement ] = useState<ElementProps>();
-    const [ studyOpen, setStudyOpen ] = useState(false);
-    const db = getDatabase();
+    // const [ currentElement, setCurrentElement ] = useState<ElementProps>();
+    const [ notesOpen, setNotesOpen ] = useState(false);
+    // const db = getDatabase();
     const [ open, setOpen] = useState(false);
     const [ message, setMessage ] = useState<string>();
     const [ messageType, setMessageType ] = useState<MessageType>();
-    const userId = localStorage.getItem('uuid');
-    const elementRef = ref(db, `study/${userId}/`);
+    const [ element_id, setElementId ] = useState<string>();
+    // const userId = localStorage.getItem('uuid');
+    // const elementRef = ref(db, `study/${userId}/`);
 
     console.log(elementData)
-
-    // useEffect(() => {
-    //     onValue(elementRef, (snapshot) => {
-    //         const data = snapshot.val()
-    //         console.log(data)
-    //         let elementList = []
-
-    //         if (data) {
-    //             for (let [key, value] of Object.entries(data)) {
-    //                 let elementItem = value as ElementProps
-    //                 elementItem['element_id'] = key
-    //                 elementList.push(elementItem)
-    //             }
-    //         }
-
-    //         setCurrentElement(elementList as ElementProps[])
-    //     })
-
-    //     return () => {
-    //         off(elementRef)
-    //     }
-    // }, [])
-    // console.log(currentElement)
-
-
-
-
-    const updateNotes = async ( elementItem: ElementProps ) => {
-        const [ openAlert, setOpen ] = useState(false)
-        const { register, handleSubmit } = useForm<SubmitProps>({})
-        // const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
-
-        // update(eleRef, {
-        //     notes: elementItem.notes
-        // })
-        // .then(() => {
-        //     setMessage(`Successfully updated your Study Guide.`)
-        //     setMessageType('success')
-        //     setOpen(true)
-        // })
-        // .then(() => { setTimeout(() => window.location.reload(), 1500)})
-        // .catch((error) => {
-        //     setMessage(error.message)
-        //     setMessageType('error')
-        //     setOpen(true)
-        // })
-        const onSubmit: SubmitHandler<SubmitProps> = async (data, event) => {
-            if (event) event.preventDefault();
-
-            let elementId: string = ""
-
-            for (let element of elementData) {
-                if (element.element_id === elementItem.element_id){
-                    elementId = element.element_id as string
-                }
-            }
     
-            const updateData = {
-                "notes": elementItem.notes
-            }
-    
-            const response = await serverCalls.updateElement(elementId, updateData)
-    
-            if ( response.status === 200){
-                setMessage('Successfully updated notes!')
-                setMessageType('success')
-                setOpen(true)
-                setTimeout(() => window.location.reload(), 1500)
-            } else {
-                setMessage(response.message)
-                setMessageType('error')
-                setOpen(true)
-            }
-        }
-
-        return (
-            <Box sx={{ padding: '20px'}}>
-                <form onSubmit = {handleSubmit(onSubmit)}>
-                    <Box>
-                        <label htmlFor='notes'>Update Notes Here</label>
-                        <InputText {...register('notes')} name='notes' placeholder='Enter notes here' />
-                    </Box>
-                    <Button type='submit'>Update Notes</Button>
-                </form>
-            <Snackbar
-                open={openAlert}
-                autoHideDuration={1500}
-                onClose={() => setOpen(false)}
-            >
-                <Alert severity = {messageType}>
-                    {message}
-                </Alert>
-
-            </Snackbar>
-            </Box>
-        )
-    }
-
-
     
 
     const deleteElement = async (elementId: string) => {
-        // const id = `${elementData[0]}`
-        // let elementId: string = ""
-
-        // for (let element of elementData) {
-        //     if (element.element_id === id){
-        //         elementId = element.element_id as string
-        //     }
-        // }
-
         console.log(elementId)
 
         const response = await serverCalls.deleteElement(elementId)
@@ -240,26 +188,6 @@ export const Study = () => {
         }
     }
 
-//     const deleteElement = async ( elementItem: ElementProps ) => {
-//         const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
-
-//         remove(eleRef)
-//         .then(() => {
-//             setMessage('Successfully deleted item from Study Guide')
-//             setMessageType('success')
-//             setOpen(true)
-//         })
-//         .then(() => { setTimeout( () => window.location.reload(), 1500)})
-//         .catch ((error) => {
-//             setMessage(error.message)
-//             setMessageType('error')
-//             setOpen(true)
-//         })
-
-//     }
-// }
-
-
     return (
         <Box sx={ studyStyles.main }>
             <NavBar />
@@ -270,16 +198,7 @@ export const Study = () => {
                 { elementData?.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
                         <Card sx={ studyStyles.card }>
-                        {/* <DeleteForeverIcon onClick = (() => deleteElement()) /> */}
-                        <Button
-                                        variant = 'contained'
-                                        size = 'medium'
-                                        sx={ studyStyles.button }
-                                        onClick = { () => deleteElement(element.element_id)}
-    
-                                    >
-                                        Delete
-                                    </Button>
+                        <DeleteForeverIcon onClick = {() => deleteElement(element.element_id)} />
                             <CardContent>
                                 <Stack
                                     direction = 'column'
@@ -307,13 +226,6 @@ export const Study = () => {
                                                 <Typography><strong>Summary:</strong> {element.summary}</Typography>
                                                 <Divider />
                                                 <Typography><strong>Notes:</strong> {element.notes}</Typography>
-                                                {/* <TextField 
-                                                variant='outlined' 
-                                                multiline={true} 
-                                                rows={3} 
-                                                fullWidth
-                                                label="Notes"
-                                                >{element.notes}</TextField> */}
                                             </AccordionDetails>
                                         </Accordion>
                                     </Stack>
@@ -322,8 +234,7 @@ export const Study = () => {
                                         size = 'medium'
                                         sx={ studyStyles.button }
                                         endIcon = { <EditNoteIcon /> }
-                                        onClick = { () => updateNotes(element)}
-                                        // onClick = { () => { setStudyOpen(true); setCurrentElement(element) }}
+                                        onClick = { () => { setNotesOpen(true); setElementId(element.element_id)}}
                                     >
                                         Update Notes
                                     </Button>
@@ -335,6 +246,14 @@ export const Study = () => {
 
                 ))}
             </Grid>
+            <Dialog open={notesOpen} onClose={() => setNotesOpen(false)}>
+            <DialogContent>
+                <UpdateNotes element_id = {element_id as string} />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={ () => setNotesOpen(false) }>Cancel</Button>
+            </DialogActions>
+            </Dialog>
             <Snackbar
                 open={open}
                 autoHideDuration={1500}
