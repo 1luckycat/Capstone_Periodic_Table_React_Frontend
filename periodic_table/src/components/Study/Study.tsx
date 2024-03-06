@@ -18,7 +18,7 @@ import {
     Typography,
     Snackbar,
     Alert,
-    TextField,
+    Divider,
 } from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -93,6 +93,10 @@ export const studyStyles = {
 }
 
 
+export interface AddProps {
+    name: string,
+    notes: string
+}
 
 
 
@@ -210,21 +214,19 @@ export const Study = () => {
 
     
 
-    const deleteElement = async ( elementItem: ElementProps) => {
-        const id = `${elementData[0]}`
-        let elementId: string = ""
+    const deleteElement = async (elementId: string) => {
+        // const id = `${elementData[0]}`
+        // let elementId: string = ""
 
-        for (let element of elementData) {
-            if (element.element_id === id){
-                elementId = element.element_id as string
-            }
-        }
+        // for (let element of elementData) {
+        //     if (element.element_id === id){
+        //         elementId = element.element_id as string
+        //     }
+        // }
 
-        const deleteData = {
-            'element_id': elementId
-        }
+        console.log(elementId)
 
-        const response = await serverCalls.deleteElement(elementId, deleteData)
+        const response = await serverCalls.deleteElement(elementId)
 
         if ( response.status === 200){
             setMessage('Successfully deleted element')
@@ -238,23 +240,24 @@ export const Study = () => {
         }
     }
 
-    // const deleteElement = async ( elementItem: ElementProps ) => {
-    //     const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
+//     const deleteElement = async ( elementItem: ElementProps ) => {
+//         const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
 
-    //     remove(eleRef)
-    //     .then(() => {
-    //         setMessage('Successfully deleted item from Study Guide')
-    //         setMessageType('success')
-    //         setOpen(true)
-    //     })
-    //     .then(() => { setTimeout( () => window.location.reload(), 1500)})
-    //     .catch ((error) => {
-    //         setMessage(error.message)
-    //         setMessageType('error')
-    //         setOpen(true)
-    //     })
+//         remove(eleRef)
+//         .then(() => {
+//             setMessage('Successfully deleted item from Study Guide')
+//             setMessageType('success')
+//             setOpen(true)
+//         })
+//         .then(() => { setTimeout( () => window.location.reload(), 1500)})
+//         .catch ((error) => {
+//             setMessage(error.message)
+//             setMessageType('error')
+//             setOpen(true)
+//         })
 
-    // }
+//     }
+// }
 
 
     return (
@@ -267,7 +270,16 @@ export const Study = () => {
                 { elementData?.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
                         <Card sx={ studyStyles.card }>
-                            <DeleteForeverIcon onClick={() => deleteElement(element)}/>
+                        {/* <DeleteForeverIcon onClick = (() => deleteElement()) /> */}
+                        <Button
+                                        variant = 'contained'
+                                        size = 'medium'
+                                        sx={ studyStyles.button }
+                                        onClick = { () => deleteElement(element.element_id)}
+    
+                                    >
+                                        Delete
+                                    </Button>
                             <CardContent>
                                 <Stack
                                     direction = 'column'
@@ -284,6 +296,7 @@ export const Study = () => {
                                                 <Typography><strong>{element.name}</strong></Typography>
                                             </AccordionSummary>
                                             <AccordionDetails>
+                                                <Divider />
                                                 <Typography><strong>Symbol:</strong> {element.symbol}</Typography>
                                                 <Typography><strong>Atomic Number:</strong> {element.atomic_number}</Typography>
                                                 <Typography><strong>Phase:</strong> {element.phase}</Typography>
@@ -292,6 +305,7 @@ export const Study = () => {
                                                 <Typography><strong>Melting Point:</strong> {element.melt}</Typography>
                                                 <Typography><strong>Category:</strong> {element.category}</Typography>
                                                 <Typography><strong>Summary:</strong> {element.summary}</Typography>
+                                                <Divider />
                                                 <Typography><strong>Notes:</strong> {element.notes}</Typography>
                                                 {/* <TextField 
                                                 variant='outlined' 

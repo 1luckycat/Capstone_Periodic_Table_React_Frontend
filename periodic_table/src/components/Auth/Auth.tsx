@@ -89,7 +89,7 @@ const GoogleButton = (_props: ButtonProps) => {
                 setMessageType('success')
                 setOpen(true)
 
-                setTimeout(() => {navigate('/shop')}, 1500)
+                setTimeout(() => {navigate('/')}, 1500)
             }
         })
 
