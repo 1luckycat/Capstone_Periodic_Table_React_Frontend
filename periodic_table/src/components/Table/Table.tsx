@@ -2,7 +2,7 @@ import * as _React from 'react';
 import './table.css';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { getDatabase, ref, push } from 'firebase/database';
+import { getDatabase } from 'firebase/database';
 import { MessageType } from '../Auth';
 import { 
     Box,
@@ -16,8 +16,9 @@ import {
 
 
 // internal imports
-import { useGetElementTable, ElementTableProps, ElementProps } from '../../customHooks';
+import { useGetElementTable, ElementProps } from '../../customHooks';
 import { NavBar, InputText } from '../sharedComponents';
+import { serverCalls } from '../../api';
 
 
 export interface SubmitProps {
@@ -40,33 +41,28 @@ const AddToStudy = (study: AddElementProps) => {
 
     const onSubmit: SubmitHandler<SubmitProps> = async (data, event) => {
         if (event) event.preventDefault();
-
-    //     const userId = localStorage.getItem('uuid')
-    //     const addEle = ref(db, `study/${userId}/`)
-
-    //     myElement.notes ? myElement.notes = data.notes : ""
-
-    // push(addEle, myElement)
-    //     .then((_newAddEle) => {
-    //         setMessage(`Successfully added element ${myElement.name} to your study guide.`)
-    //         setMessageType('success')
-    //         setOpen(true)
-    //     })
-    //     .then(() => {
-    //         setTimeout(() => window.location.reload(), 1500)
-    //     })
-    //     .catch((error) => {
-    //         setMessage(error.message)
-    //         setMessageType('error')
-    //         setOpen(true)
-    //     })
         console.log(data)
         
-        // sending off as body 
+        // sending off as body in servercalls
         const createElement = {
             "name": study.addElement.name,
             "notes": data.notes
         }
+
+    serverCalls.addElement(createElement)
+    .then((_newAddEle) => {
+        setMessage(`Successfully added element ${myElement.name} to your study guide.`)
+        setMessageType('success')
+        setOpen(true)
+    })
+    .then(() => {
+        setTimeout(() => window.location.reload(), 1500)
+    })
+    .catch((error) => {
+        setMessage(error.message)
+        setMessageType('error')
+        setOpen(true)
+    })
 
     }
 
@@ -80,9 +76,10 @@ const AddToStudy = (study: AddElementProps) => {
                 </Box>
                 <Button type='submit'>Submit</Button>
             </form>
+            
             <Snackbar
                 open={open}
-                autoHideDuration={2500}
+                autoHideDuration={1500}
                 onClose={() => setOpen(false)}
             >
                 <Alert severity = {messageType}>
@@ -91,11 +88,10 @@ const AddToStudy = (study: AddElementProps) => {
             </Snackbar>
         </Box>
     )
-
-
 }
 
-const colorMap = {
+// colors for different element category
+export const colorMap = {
     "diatomic nonmetal": "#74BBFB",
     "noble gas": "#7B68EE",
     "alkaline earth metal": "#008000",
@@ -116,9 +112,6 @@ export const Table = () => {
     console.log(elementTableData)
     const [ currentStudy, setCurrentStudy] = useState<ElementProps>();
     const [ studyOpen, setStudyOpen ] = useState(false)
-
-
-
 
     return (
 
@@ -142,6 +135,7 @@ export const Table = () => {
                 <DialogContent>
                     <DialogContentText>Add to Study Guide</DialogContentText>
                     <AddToStudy addElement = { currentStudy as ElementProps }/>
+                    
                 </DialogContent>
             </Dialog>
         </div>
@@ -149,3 +143,40 @@ export const Table = () => {
 }
 
 
+
+
+
+
+
+// CODE IF I WAS ADDING TO FIREBASE DATABASE
+// const AddToStudy = (study: AddElementProps) => {
+//     const db = getDatabase();
+//     const [ open, setOpen ] = useState(false);
+//     const [ message, setMessage ] = useState<string>();
+//     const [ messageType, setMessageType ] = useState<MessageType>();
+//     const { register, handleSubmit } = useForm<SubmitProps>();
+//     let myElement = study.addElement
+
+
+//     const onSubmit: SubmitHandler<SubmitProps> = async (data, event) => {
+//         if (event) event.preventDefault();
+
+//         const userId = localStorage.getItem('uuid')
+//         const addEle = ref(db, `study/${userId}/`)
+
+//         myElement.notes ? myElement.notes = data.notes : ""
+
+//     push(addEle, myElement)
+//         .then((_newAddEle) => {
+//             setMessage(`Successfully added element ${myElement.name} to your study guide.`)
+//             setMessageType('success')
+//             setOpen(true)
+//         })
+//         .then(() => {
+//             setTimeout(() => window.location.reload(), 1500)
+//         })
+//         .catch((error) => {
+//             setMessage(error.message)
+//             setMessageType('error')
+//             setOpen(true)
+//         })

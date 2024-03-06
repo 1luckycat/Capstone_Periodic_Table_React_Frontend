@@ -45,6 +45,6 @@
 
 .element:hover {
     color: white;
-    transform: translateY(-10px);
+    transform: translateY(-15px);
 }
 

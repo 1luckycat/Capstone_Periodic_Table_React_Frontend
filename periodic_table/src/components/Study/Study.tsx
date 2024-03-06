@@ -31,6 +31,7 @@ import { NavBar, InputText } from '../sharedComponents';
 import { theme } from '../../Theme/themes';
 import { MessageType } from '../Auth';
 import { serverCalls } from '../../api';
+import { SubmitProps } from '../Table';
 
 
 
@@ -69,9 +70,10 @@ export const studyStyles = {
         color: 'white',
         borderRadius: '10px',
         height: '45px',
-        width: '250px',
+        width: '200px',
         marginTop: '20px',
         backgroundColor: theme.palette.info.main
+        
     }, 
     stack: {
         width: '75%',
@@ -135,47 +137,124 @@ export const Study = () => {
 
 
     const updateNotes = async ( elementItem: ElementProps ) => {
-        const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
+        const [ openAlert, setOpen ] = useState(false)
+        const { register, handleSubmit } = useForm<SubmitProps>({})
+        // const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
 
-        update(eleRef, {
-            notes: elementItem.notes
-        })
-        .then(() => {
-            setMessage(`Successfully updated your Study Guide.`)
-            setMessageType('success')
-            setOpen(true)
-        })
-        .then(() => { setTimeout(() => window.location.reload(), 1500)})
-        .catch((error) => {
-            setMessage(error.message)
-            setMessageType('error')
-            setOpen(true)
-        })
+        // update(eleRef, {
+        //     notes: elementItem.notes
+        // })
+        // .then(() => {
+        //     setMessage(`Successfully updated your Study Guide.`)
+        //     setMessageType('success')
+        //     setOpen(true)
+        // })
+        // .then(() => { setTimeout(() => window.location.reload(), 1500)})
+        // .catch((error) => {
+        //     setMessage(error.message)
+        //     setMessageType('error')
+        //     setOpen(true)
+        // })
+        const onSubmit: SubmitHandler<SubmitProps> = async (data, event) => {
+            if (event) event.preventDefault();
+
+            let elementId: string = ""
+
+            for (let element of elementData) {
+                if (element.element_id === elementItem.element_id){
+                    elementId = element.element_id as string
+                }
+            }
+    
+            const updateData = {
+                "notes": elementItem.notes
+            }
+    
+            const response = await serverCalls.updateElement(elementId, updateData)
+    
+            if ( response.status === 200){
+                setMessage('Successfully updated notes!')
+                setMessageType('success')
+                setOpen(true)
+                setTimeout(() => window.location.reload(), 1500)
+            } else {
+                setMessage(response.message)
+                setMessageType('error')
+                setOpen(true)
+            }
+        }
+
+        return (
+            <Box sx={{ padding: '20px'}}>
+                <form onSubmit = {handleSubmit(onSubmit)}>
+                    <Box>
+                        <label htmlFor='notes'>Update Notes Here</label>
+                        <InputText {...register('notes')} name='notes' placeholder='Enter notes here' />
+                    </Box>
+                    <Button type='submit'>Update Notes</Button>
+                </form>
+            <Snackbar
+                open={openAlert}
+                autoHideDuration={1500}
+                onClose={() => setOpen(false)}
+            >
+                <Alert severity = {messageType}>
+                    {message}
+                </Alert>
+
+            </Snackbar>
+            </Box>
+        )
     }
 
 
+    
 
-    const deleteElement = async ( elementItem: ElementProps ) => {
-        const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
+    const deleteElement = async ( elementItem: ElementProps) => {
+        const id = `${elementData[0]}`
+        let elementId: string = ""
 
-        remove(eleRef)
-        .then(() => {
-            setMessage('Successfully deleted item from Study Guide')
+        for (let element of elementData) {
+            if (element.element_id === id){
+                elementId = element.element_id as string
+            }
+        }
+
+        const deleteData = {
+            'element_id': elementId
+        }
+
+        const response = await serverCalls.deleteElement(elementId, deleteData)
+
+        if ( response.status === 200){
+            setMessage('Successfully deleted element')
             setMessageType('success')
             setOpen(true)
-        })
-        .then(() => { setTimeout( () => window.location.reload(), 1500)})
-        .catch ((error) => {
-            setMessage(error.message)
+            setTimeout(() => window.location.reload(), 1500)
+        } else {
+            setMessage(response.message)
             setMessageType('error')
             setOpen(true)
-        })
-
+        }
     }
 
+    // const deleteElement = async ( elementItem: ElementProps ) => {
+    //     const eleRef = ref(db, `study/${userId}/${elementItem.element_id}`)
 
+    //     remove(eleRef)
+    //     .then(() => {
+    //         setMessage('Successfully deleted item from Study Guide')
+    //         setMessageType('success')
+    //         setOpen(true)
+    //     })
+    //     .then(() => { setTimeout( () => window.location.reload(), 1500)})
+    //     .catch ((error) => {
+    //         setMessage(error.message)
+    //         setMessageType('error')
+    //         setOpen(true)
+    //     })
 
-
+    // }
 
 
     return (
@@ -184,7 +263,6 @@ export const Study = () => {
             <Typography variant='h4' sx={ studyStyles.typography }>
                 Your Study Guide
             </Typography>
-            {/* container spacing={3} */}
             <Grid className="container" container spacing={3} sx={ studyStyles.grid }>
                 { elementData?.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
@@ -214,13 +292,14 @@ export const Study = () => {
                                                 <Typography><strong>Melting Point:</strong> {element.melt}</Typography>
                                                 <Typography><strong>Category:</strong> {element.category}</Typography>
                                                 <Typography><strong>Summary:</strong> {element.summary}</Typography>
-                                                <TextField 
+                                                <Typography><strong>Notes:</strong> {element.notes}</Typography>
+                                                {/* <TextField 
                                                 variant='outlined' 
                                                 multiline={true} 
                                                 rows={3} 
                                                 fullWidth
                                                 label="Notes"
-                                                ></TextField>
+                                                >{element.notes}</TextField> */}
                                             </AccordionDetails>
                                         </Accordion>
                                     </Stack>
@@ -228,6 +307,7 @@ export const Study = () => {
                                         variant = 'contained'
                                         size = 'medium'
                                         sx={ studyStyles.button }
+                                        endIcon = { <EditNoteIcon /> }
                                         onClick = { () => updateNotes(element)}
                                         // onClick = { () => { setStudyOpen(true); setCurrentElement(element) }}
                                     >

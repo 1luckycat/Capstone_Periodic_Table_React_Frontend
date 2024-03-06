@@ -44,7 +44,7 @@ export const serverCalls = {
 
 
 // call for adding element
-    addElement: async (data: AddElementProps) => {
+    addElement: async (data: any) => {
         const response = await fetch(`https://periodic-table-study-guide-capstone.onrender.com/api/study/create/${userId}`, {
             method: 'POST',
             headers: {
