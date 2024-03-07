@@ -25,33 +25,88 @@
     justify-content: center;
     align-items: center;
     color: white;
-    overflow: hidden;
     min-height: 100vh;
     position: relative;
     font-size: 3vw;
-    transform: translateY(100vh);
-    animation: fall 10.5s forwards 1;
-    /* animation-iteration-count: 5; */
+
 
 }
 
 #q {
-    margin-left: 9px
+    margin-left: 9px;
+    position: fixed;
+    top: -100%;
+    transform: translateY(100vh);
+    animation: moveUp 1s forwards 1;
+    /* animation-iteration-count: infinite; */
+    
 }
 
-#z {
-    margin-right: 9px
-}
-
-@keyframes fall {
-    0% {
-        transform: translateY(0);
-    }
-    100%{
-        transform: translateY(100)
-    }
+#u {
+    margin-left: 9px;
+    position: fixed;
+    left: 100%;
+    transform: translateX(100vh);
+    animation: moveLeft 1s forwards 1;
+    /* animation-iteration-count: infinite; */
     
 }
 
 
-/* fill='freeze' */
+#i {
+    margin-left: 9px;
+    position: fixed;
+    right: 100%;
+    transform: translateX(100vh);
+    animation: moveRight 1s forwards 1;
+    /* animation-iteration-count: infinite; */
+    
+}
+
+
+#z {
+    margin-right: 9px;
+    position: fixed;
+    bottom: -100%;
+    transform: translateY(100vh);
+    animation: moveDown 1s forwards 1;
+    /* animation-iteration-count: infinite; */
+}
+
+@keyframes moveUp {
+    0% {
+        transform: translateY(100%);
+    }
+    100%{
+        transform: translateY(0)
+    }
+    
+}
+
+@keyframes moveLeft {
+    from {
+        transform: translateX(-2500%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveRight {
+    from {
+        transform: translateX(4600%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes moveDown {
+    0% {
+        transform: translateY(-90%);
+    }
+    100%{
+        transform: translateY(0)
+    }
+    
+}

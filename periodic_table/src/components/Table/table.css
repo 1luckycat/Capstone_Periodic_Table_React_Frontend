@@ -73,14 +73,8 @@
     }
 }
 
-.title:hover {
-    transform: translateY()
-}
 
-/* @keyframes spin {
-
-} */
-
+/* Code for background gradient animation */
 :root {
     --gradient: linear-gradient(
         135deg,
@@ -90,7 +84,6 @@
         #C0060F
     )
 }
-
 
 .bigContainer {
     background-image: var(--gradient);

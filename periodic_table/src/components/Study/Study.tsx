@@ -132,10 +132,10 @@ const UpdateNotes = ( element: PartialElementProps ) => {
         <Box sx={{ padding: '20px'}}>
             <form onSubmit = {handleSubmit(onSubmit)}>
                 <Box>
-                    <label htmlFor='notes'>Update Notes Here</label>
+                    <label htmlFor='notes'>Update Notes</label>
                     <InputText {...register('notes')} name='notes' placeholder='Enter notes here' />
                 </Box>
-                <Button type='submit'>Update Notes</Button>
+                <Button type='submit'>Submit</Button>
             </form>
         <Snackbar
             open={openAlert}
@@ -196,14 +196,14 @@ export const Study = () => {
             <NavBar />
             <div className="rain">
                 <div className="elementSymbol">
-            <Typography variant='h4' sx={ studyStyles.typography }>
+            <Typography className="studyTitle" variant='h4' sx={ studyStyles.typography }>
                 Your Study Guide
             </Typography>
             <Grid className="container" container spacing={3} sx={ studyStyles.grid }>
                 { elementData?.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
                         <Card sx={ studyStyles.card }>
-                        <DeleteForeverIcon onClick = {() => deleteElement(element.element_id)} />
+                        <DeleteForeverIcon className='deleteIcon' onClick = {() => deleteElement(element.element_id)} />
                             <CardContent>
                                 <Stack
                                     direction = 'column'
@@ -238,7 +238,6 @@ export const Study = () => {
                                         variant = 'contained'
                                         size = 'medium'
                                         sx={ studyStyles.button }
-                                        // endIcon = { <EditNoteIcon /> }
                                         onClick = { () => { setNotesOpen(true); setElementId(element.element_id)}}
                                     >
                                         Update Notes
