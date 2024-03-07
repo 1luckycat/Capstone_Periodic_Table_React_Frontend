@@ -2,7 +2,6 @@ import * as _React from 'react';
 import './table.css';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { getDatabase } from 'firebase/database';
 import { MessageType } from '../Auth';
 import { 
     Box,
@@ -31,7 +30,6 @@ export interface AddElementProps {
 
 
 const AddToStudy = (study: AddElementProps) => {
-    const db = getDatabase();
     const [ open, setOpen ] = useState(false);
     const [ message, setMessage ] = useState<string>();
     const [ messageType, setMessageType ] = useState<MessageType>();
@@ -56,7 +54,7 @@ const AddToStudy = (study: AddElementProps) => {
         setOpen(true)
     })
     .then(() => {
-        setTimeout(() => window.location.reload(), 1500)
+        setTimeout(() => window.location.reload(), 1000)
     })
     .catch((error) => {
         setMessage(error.message)
@@ -91,7 +89,7 @@ const AddToStudy = (study: AddElementProps) => {
 }
 
 // colors for different element category
-export const colorMap = {
+export const colorMap: ColorMap = {
     "diatomic nonmetal": "#74BBFB",
     "noble gas": "#7B68EE",
     "alkaline earth metal": "#008000",
@@ -104,6 +102,10 @@ export const colorMap = {
     metalloid: "#FF681F"
 };
 
+interface ColorMap {
+    [key: string]: string
+}
+
 
 
 export const Table = () => {
@@ -114,14 +116,14 @@ export const Table = () => {
     const [ studyOpen, setStudyOpen ] = useState(false)
 
     return (
-
+        <div className='bigContainer'>
         <div>
             <NavBar />
             <h1 className="title">Periodic Table</h1>
             <div className = "periodic-table">
                 { elementTableData.map((element) => (
                 <div className = "element" key={element.name} style={{
-                    gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[[element.category]]}} 
+                    gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
                     onClick={()=> {setStudyOpen(true); setCurrentStudy(element as ElementProps)}}
                     
                     > 
@@ -138,6 +140,8 @@ export const Table = () => {
                     
                 </DialogContent>
             </Dialog>
+        </div>
+        
         </div>
     )
 }

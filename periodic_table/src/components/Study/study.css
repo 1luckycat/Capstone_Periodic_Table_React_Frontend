@@ -10,11 +10,11 @@
 .elementSymbol span {
     display: inline-block;
     font-family: "Poppins", sans-serif;
-    font-size: 1vw;
+    font-size: .75vw;
     border-style: solid;
     position: relative;
     transform: translateY(-300vh);
-    animation: fall 10.5s forwards;
+    animation: fall 10.5s;
     animation-iteration-count: infinite;
     padding: 10px 10px;
     opacity: 25%;
@@ -24,7 +24,6 @@
 @keyframes fall {
     100%{
         transform: translateY(0);
-        transform: 'leave';
     }
     
 }

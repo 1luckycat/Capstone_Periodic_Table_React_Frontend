@@ -21,7 +21,6 @@ import ScienceIcon from '@mui/icons-material/Science';
 import QuizIcon from '@mui/icons-material/Quiz';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import MenuIcon from '@mui/icons-material/Menu';
-import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { signOut, getAuth } from 'firebase/auth';
 

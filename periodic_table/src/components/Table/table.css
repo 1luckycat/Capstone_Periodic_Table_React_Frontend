@@ -2,19 +2,19 @@
     display: grid;
     grid-template-columns: repeat(18, 85px);
     grid-template-rows: repeat(10, 75px);
-    position: absolute;
-    margin-top: 90px;
-    padding: 30px;
+    /* position: absolute; */
+    margin-left: 40px;
+    padding: 10px;
     gap: 1px;
     /* top: 50%; */
     /* left: 50%; */
     /* transform: translate(-50%, -50%); */
+    animation: slideInRight cubic-bezier(0.42, 0, 0.68, 1.52) 3s 1;
 }
 
 .element {
     border-style: solid;
     transition: transform 0.2s ease;
-
 }
 
 .name {
@@ -33,18 +33,76 @@
     display: flex;
     justify-content: center;
     font-size: larger;
+
 }
 
 .title {
     margin-top: 80px;
     font-size: 50px;
     margin-left: 500px;
-    position: absolute;
-    
+    animation: slideInLeft cubic-bezier(0.42, 0, 0.68, 1.52) 3s 1;
+    /* position: absolute; */
+    background: linear-gradient(to bottom, black, red);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
 }
+
 
 .element:hover {
     color: white;
     transform: translateY(-15px);
 }
 
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(2000px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-1000px);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.title:hover {
+    transform: translateY()
+}
+
+/* @keyframes spin {
+
+} */
+
+:root {
+    --gradient: linear-gradient(
+        135deg,
+        white,
+        #FCFDF5,
+        #FF631C,
+        #C0060F
+    )
+}
+
+
+.bigContainer {
+    background-image: var(--gradient);
+    animation: bg-animation 15s infinite alternate;
+    background-size: 250%
+}
+
+@keyframes bg-animation {
+    0% {
+        background-position: left;
+    }
+    100% {
+        background-position: right;
+    }
+}

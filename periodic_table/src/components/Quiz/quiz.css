@@ -29,9 +29,9 @@
     min-height: 100vh;
     position: relative;
     font-size: 3vw;
-    /* transform: translateY(-300vh); */
-    /* animation: fall 10.5s forwards; */
-    animation-iteration-count: 1;
+    transform: translateY(100vh);
+    animation: fall 10.5s forwards 1;
+    /* animation-iteration-count: 5; */
 
 }
 
@@ -43,10 +43,15 @@
     margin-right: 9px
 }
 
-/* @keyframes fall {
-    100%{
+@keyframes fall {
+    0% {
         transform: translateY(0);
-        transform: 'leave';
+    }
+    100%{
+        transform: translateY(100)
     }
     
-} */
+}
+
+
+/* fill='freeze' */
