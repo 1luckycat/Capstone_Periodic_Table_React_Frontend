@@ -1,4 +1,5 @@
 import * as _React from 'react';
+import './study.css'
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 // import { getDatabase, ref } from 'firebase/database';
@@ -188,9 +189,14 @@ export const Study = () => {
         }
     }
 
+
+
     return (
-        <Box sx={ studyStyles.main }>
+
+        <Box className='page' sx={ studyStyles.main }>
             <NavBar />
+            <div className="rain">
+                <div className="elementSymbol">
             <Typography variant='h4' sx={ studyStyles.typography }>
                 Your Study Guide
             </Typography>
@@ -233,7 +239,7 @@ export const Study = () => {
                                         variant = 'contained'
                                         size = 'medium'
                                         sx={ studyStyles.button }
-                                        endIcon = { <EditNoteIcon /> }
+                                        // endIcon = { <EditNoteIcon /> }
                                         onClick = { () => { setNotesOpen(true); setElementId(element.element_id)}}
                                     >
                                         Update Notes
@@ -263,7 +269,26 @@ export const Study = () => {
                     {message}
                 </Alert>
             </Snackbar>
-        </Box>
+                <span>H</span><span>He</span><span>Li</span><span>Be</span><span>B</span><span>C</span><span>N</span>
+                <span>O</span><span>F</span><span>Ne</span><span>Na</span><span>Mg</span><span>Al</span><span>Si</span>
+                <span>P</span><span>S</span><span>Cl</span><span>Ar</span><span>K</span><span>Ca</span><span>Sc</span>
+                <span>Ti</span><span>V</span><span>Cr</span><span>Mn</span><span>Fe</span><span>Co</span><span>Ni</span>
+                <span>Cu</span><span>Zn</span><span>Ga</span><span>Ge</span><span>As</span><span>Se</span><span>Br</span>      
+                <span>Kr</span><span>Rb</span><span>Sr</span><span>Y</span><span>Zr</span><span>Nb</span><span>Mo</span>
+                <span>Tc</span><span>Ru</span><span>Rh</span><span>Pd</span><span>Ag</span><span>Cd</span><span>In</span>
+                <span>Sn</span><span>Sb</span><span>Te</span><span>I</span><span>Xe</span><span>Cs</span><span>Ba</span>
+                <span>La</span><span>Hf</span><span>Ta</span><span>W</span><span>Re</span><span>Os</span><span>Ir</span>
+                <span>Pt</span><span>Au</span><span>Hg</span><span>Ti</span><span>Pb</span><span>Bi</span><span>Po</span>
+                <span>At</span><span>Rn</span><span>Fr</span><span>Ra</span><span>Ac</span><span>Rf</span><span>Db</span>
+                <span>Sg</span><span>Bh</span><span>Hs</span><span>Mt</span><span>Ds</span><span>Rg</span><span>Cn</span>
+                <span>Nh</span><span>Fl</span><span>Mc</span><span>Lv</span><span>Ts</span><span>Og</span><span>Ce</span>
+                <span>Pr</span><span>Nd</span><span>Pm</span><span>Sm</span><span>Eu</span><span>Gd</span><span>Tb</span>
+                <span>Dy</span><span>Ho</span><span>Er</span><span>Tm</span><span>Yb</span><span>Lu</span><span>Th</span>
+                <span>Pa</span><span>U</span><span>Np</span><span>Pu</span><span>Am</span><span>Cm</span><span>Bk</span>
+                <span>Cf</span><span>Es</span><span>Fm</span><span>Md</span><span>No</span><span>Lr</span>
+            </div>
+            </div>
+        </Box>  
     )
 }
 
