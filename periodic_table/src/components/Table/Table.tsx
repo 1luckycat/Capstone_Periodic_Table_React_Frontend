@@ -1,6 +1,6 @@
 import * as _React from 'react';
 import './table.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MessageType } from '../Auth';
 import { 
@@ -12,6 +12,11 @@ import {
     DialogContent,
     DialogContentText,
 } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+// import * as ReactBootStrap from 'react-bootstrap';
+
+
 
 
 // internal imports
@@ -53,9 +58,10 @@ const AddToStudy = (study: AddElementProps) => {
         setMessageType('success')
         setOpen(true)
     })
-    .then(() => {
-        setTimeout(() => window.location.reload(), 1000)
-    })
+    // can add if wanting page to reload after submitting element to guid
+    // .then(() => {
+    //     setTimeout(() => window.location.reload(), 1000)
+    // })
     .catch((error) => {
         setMessage(error.message)
         setMessageType('error')
@@ -114,40 +120,127 @@ export const Table = () => {
     console.log(elementTableData)
     const [ currentStudy, setCurrentStudy] = useState<ElementProps>();
     const [ studyOpen, setStudyOpen ] = useState(false)
+    const [ loading, setLoading ] = useState(true);
+    
+    useEffect(() => {
+        setLoading(true);
 
-    return (
-        <div className='bigContainer'>
-        <div>
-            <NavBar />
-            <h1 className="title">Periodic Table</h1>
-            <div className = "periodic-table">
-                { elementTableData.map((element) => (
-                <div className = "element" key={element.name} style={{
-                    gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
-                    onClick={()=> {setStudyOpen(true); setCurrentStudy(element as ElementProps)}}
-                    
-                    > 
-                    <small className="number">{element.atomic_number}</small>
-                    <strong className="symbol">{element.symbol}</strong>
-                    <small className='name'>{element.name}</small>
-                </div> 
-                ))}
-            </div>
-            <Dialog open={studyOpen} onClose={() => {setStudyOpen(false)}}>
-                <DialogContent>
-                    <DialogContentText>Add to Study Guide</DialogContentText>
-                    <AddToStudy addElement = { currentStudy as ElementProps }/>
-                    
-                </DialogContent>
-            </Dialog>
-        </div>
+        fetchDataFromAPI().then(() => {
+            setLoading(false);
+        });
         
+    }, []);
+
+    const fetchDataFromAPI = async () => {
+        await new Promise((resolve) => setTimeout(resolve));  // setTimeout(resolve, 20000) for 2 min load
+    };
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+                
+    //             setLoading(true);
+                
+    //             const data = await useGetElementTable();
+
+    //             if (data) {
+    //                 setLoading(false);
+    //             }
+                
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //             setLoading(false); 
+    //         }
+    //     };
+
+    //     fetchData(); 
+    // }, []);
+
+    
+
+//     return (
+//         <div className='bigContainer'>
+//         <div>
+//             <NavBar />
+//             <h1 className="title">Periodic Table</h1>
+//             <div className = "periodic-table">
+//                 {loading ? (
+//                     <div style={{ display: 'flex', justifyContent: 'center' }}>
+//                     <CircularProgress />
+//                     <div>Loading table...</div>
+                    
+//                 </div>
+//                 ) : (
+//                 <> 
+//                 { elementTableData.map((element) => (
+//                 <div className = "element" key={element.name} style={{
+//                     gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
+//                     onClick={()=> {setStudyOpen(true); setCurrentStudy(element as ElementProps)}}
+                    
+//                     > 
+//                     <small className="number">{element.atomic_number}</small>
+//                     <strong className="symbol">{element.symbol}</strong>
+//                     <small className='name'>{element.name}</small>
+                    
+//                 </div> 
+//                 ))}
+//             </>)} 
+                
+//             </div>
+//             <Dialog open={studyOpen} onClose={() => {setStudyOpen(false)}}>
+//                 <DialogContent>
+//                     <DialogContentText>Add to Study Guide</DialogContentText>
+//                     <AddToStudy addElement = { currentStudy as ElementProps }/>
+                    
+//                 </DialogContent>
+//             </Dialog>
+//         </div>
+        
+//         </div>
+//     )
+// }
+
+
+
+return (
+    <div className='bigContainer'>
+    <div>
+        <NavBar />
+        <h1 className="title">Periodic Table</h1>
+        <div className = "periodic-table">
+            
+            { elementTableData.map((element) => (
+            <div className = "element" key={element.name} style={{
+                gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
+                onClick={()=> {setStudyOpen(true); setCurrentStudy(element as ElementProps)}}
+                
+                > 
+                <small className="number">{element.atomic_number}</small>
+                <strong className="symbol">{element.symbol}</strong>
+                <small className='name'>{element.name}</small>
+                
+            </div> 
+            ))}
+        
+            
         </div>
-    )
+        <Dialog open={studyOpen} onClose={() => {setStudyOpen(false)}}>
+            <DialogContent>
+                <DialogContentText>Add to Study Guide</DialogContentText>
+                <AddToStudy addElement = { currentStudy as ElementProps }/>
+                
+            </DialogContent>
+        </Dialog>
+    </div>
+    {loading ? (
+                <Backdrop open={loading} style={{ zIndex: 999, color: '#fff' }}>
+                    <CircularProgress color="inherit" />
+                    <div>Loading table...</div>
+                </Backdrop>
+            ) : null}
+    </div>
+)
 }
-
-
-
 
 
 
