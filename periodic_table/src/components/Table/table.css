@@ -6,8 +6,8 @@
     margin-left: 40px;
     padding: 10px;
     gap: 1px;
-    /* top: 50%; */
-    /* left: 50%; */
+    top: 50%;
+    left: 50%;
     /* transform: translate(-50%, -50%); */
     animation: slideInRight cubic-bezier(0.42, 0, 0.68, 1.52) 3s 1;
 }
@@ -48,11 +48,17 @@
 
 }
 
-/* .progress {
+.loader {
+    color: black;
+    height: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
-    margin-top: 30px;
-} */
+    align-items: center;
+    font-size: larger;
+    gap: 15px;
+    
+}
 
 
 .element:hover {
@@ -94,7 +100,11 @@
 .bigContainer {
     background-image: var(--gradient);
     animation: bg-animation 15s infinite alternate;
-    background-size: 250%
+    background-size: 250%;
+    display: flex;
+    justify-content: center;
+    /* height: 100vh;
+    width: 100vw; */
 }
 
 @keyframes bg-animation {
