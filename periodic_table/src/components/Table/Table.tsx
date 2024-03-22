@@ -121,7 +121,28 @@ export const Table = () => {
     const [ currentStudy, setCurrentStudy] = useState<ElementProps>();
     const [ studyOpen, setStudyOpen ] = useState(false)
     const [ loading, setLoading ] = useState(true);
+
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const data = await useGetElementTable();
+    //             setLoading(false)
+    //         } catch (error) {
+    //             console.error('Failed to fetch data:', error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    //     fetchData();
+    //     return () => {
+
+    //     };
+    // }, []);
+
     
+    // TIMER AFTER EVERY REFRESH
     useEffect(() => {
         setLoading(true);
 
@@ -135,6 +156,10 @@ export const Table = () => {
         await new Promise((resolve) => setTimeout(resolve, 75000)); 
     };
 
+
+
+
+    // TRY #2
     // useEffect(() => {
     //     const fetchData = async () => {
     //         try {
