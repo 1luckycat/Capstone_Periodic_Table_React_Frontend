@@ -51,8 +51,6 @@ export const studyStyles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        
-        
     },
     card: {
         width: '700px',
@@ -63,7 +61,6 @@ export const studyStyles = {
         boarder: '2px solid',
         borderColor: 'black',
         borderRadius: '10px',
-
     },
     button: {
         color: 'white',
@@ -72,7 +69,6 @@ export const studyStyles = {
         width: '200px',
         marginTop: '20px',
         backgroundColor: theme.palette.info.main
-        
     }, 
     stack: {
         width: '75%',
@@ -202,7 +198,7 @@ export const Study = () => {
             <Grid className="container" container spacing={3} sx={ studyStyles.grid }>
                 { elementData?.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
-                        <Card sx={ studyStyles.card }>
+                        <Card className='card' sx={ studyStyles.card }>
                         <DeleteForeverIcon className='deleteIcon' onClick = {() => deleteElement(element.element_id)} />
                             <CardContent>
                                 <Stack

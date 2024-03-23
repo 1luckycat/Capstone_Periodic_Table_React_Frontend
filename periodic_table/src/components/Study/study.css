@@ -19,9 +19,14 @@
     1px 30px 60px rgba(16, 16, 16, 0.4)
 }
 
+.card {
+    position: relative;
+    z-index: 1;
+}
 
 .elementSymbol {
     color: grey;
+    
 }
 
 
@@ -31,17 +36,17 @@
     font-size: .75vw;
     border-style: solid;
     position: relative;
-    transform: translateY(-300vh);
+    transform: translateY(-150vh);
     animation: fall 10.5s;
     animation-iteration-count: infinite;
     padding: 10px 10px;
-    opacity: 25%;
-    
+    opacity: 20%;
 }
+
 
 @keyframes fall {
     100%{
-        transform: translateY(0);
+        transform: translateY(80vh);
     }
     
 }
