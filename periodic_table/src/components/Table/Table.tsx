@@ -11,8 +11,8 @@ import {
     Dialog,
     DialogContent,
     DialogContentText,
+    Backdrop,
 } from '@mui/material';
-import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 // import * as ReactBootStrap from 'react-bootstrap';
 
@@ -122,25 +122,6 @@ export const Table = () => {
     const [ studyOpen, setStudyOpen ] = useState(false)
     const [ loading, setLoading ] = useState(true);
 
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true);
-    //         try {
-    //             const data = await useGetElementTable();
-    //             setLoading(false)
-    //         } catch (error) {
-    //             console.error('Failed to fetch data:', error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-    //     fetchData();
-    //     return () => {
-
-    //     };
-    // }, []);
-
     
     // TIMER AFTER EVERY REFRESH
     useEffect(() => {
@@ -155,11 +136,10 @@ export const Table = () => {
     const fetchDataFromAPI = async () => {
         await new Promise((resolve) => setTimeout(resolve, 75000)); 
     };
+    
 
 
-
-
-    // TRY #2
+    // DIDNT WORK - LOADER NOT DISPLAYED
     // useEffect(() => {
     //     const fetchData = async () => {
     //         try {
@@ -181,6 +161,27 @@ export const Table = () => {
     //     fetchData(); 
     // }, []);
 
+
+
+    // DIDNT WORK - SPINNER NOT DISPLAYED
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             const data = await useGetElementTable();
+    //             setLoading(false)
+    //         } catch (error) {
+    //             console.error('Failed to fetch data:', error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    //     fetchData();
+    //     return () => {
+
+    //     };
+    // }, []);
+
     
 
     return (
@@ -193,7 +194,6 @@ export const Table = () => {
                     <div className='loader'>
                     <CircularProgress className='progress' />
                     <div>Loading table...</div>
-                    
                 </div>
                 ) : (
                 <> 
@@ -224,6 +224,7 @@ export const Table = () => {
         </div>
     )
 }
+
 
 
 
