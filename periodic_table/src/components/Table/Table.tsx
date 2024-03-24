@@ -11,11 +11,8 @@ import {
     Dialog,
     DialogContent,
     DialogContentText,
-    Backdrop,
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-// import * as ReactBootStrap from 'react-bootstrap';
-
 
 
 
@@ -123,19 +120,19 @@ export const Table = () => {
     const [ loading, setLoading ] = useState(true);
 
     
-    // TIMER AFTER EVERY REFRESH
-    useEffect(() => {
-        setLoading(true);
+    // // TIMER AFTER EVERY REFRESH
+    // useEffect(() => {
+    //     setLoading(true);
 
-        fetchDataFromAPI().then(() => {
-            setLoading(false);
-        });
+    //     fetchDataFromAPI().then(() => {
+    //         setLoading(false);
+    //     });
         
-    }, []);
+    // }, []);
 
-    const fetchDataFromAPI = async () => {
-        await new Promise((resolve) => setTimeout(resolve, 75000)); 
-    };
+    // const fetchDataFromAPI = async () => {
+    //     await new Promise((resolve) => setTimeout(resolve, 75000)); 
+    // };
     
 
 
@@ -190,13 +187,13 @@ export const Table = () => {
             <NavBar />
             <h1 className="title">Periodic Table</h1>
             <div className = "periodic-table">
-                {loading ? (
+                {/* {loading ? (
                     <div className='loader'>
                     <CircularProgress className='progress' />
                     <div>Loading table...</div>
                 </div>
                 ) : (
-                <> 
+                <>  */}
                 { elementTableData.map((element) => (
                 <div className = "element" key={element.name} style={{
                     gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
@@ -209,7 +206,7 @@ export const Table = () => {
                     
                 </div> 
                 ))}
-            </>)} 
+            {/* </>)}  */}
                 
             </div>
             <Dialog open={studyOpen} onClose={() => {setStudyOpen(false)}}>

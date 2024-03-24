@@ -48,7 +48,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: slideInLeft cubic-bezier(0.42, 0, 0.68, 1.52) 3s 1;
+    animation: slideInLeft cubic-bezier(0.42, 0, 0.68, 1.52) 2s 1;
     position: absolute;
     background: linear-gradient(to bottom, black, red);
     background-clip: text;
