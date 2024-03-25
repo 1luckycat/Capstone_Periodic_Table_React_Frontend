@@ -1,6 +1,6 @@
 import * as _React from 'react';
 import './table.css';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';  
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { MessageType } from '../Auth';
 import { 
@@ -119,67 +119,28 @@ export const Table = () => {
     const [ studyOpen, setStudyOpen ] = useState(false)
     const [ loading, setLoading ] = useState(true);
 
-    
-    // // TIMER AFTER EVERY REFRESH
-    // useEffect(() => {
-    //     setLoading(true);
-
-    //     fetchDataFromAPI().then(() => {
-    //         setLoading(false);
-    //     });
-        
-    // }, []);
-
-    // const fetchDataFromAPI = async () => {
-    //     await new Promise((resolve) => setTimeout(resolve, 75000)); 
-    // };
-    
-
-
-    // DIDNT WORK - LOADER NOT DISPLAYED
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
+// To display loading spinner until periodic table is displayed 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
                 
-    //             setLoading(true);
+                setLoading(true);
                 
-    //             const data = await useGetElementTable();
+                const data = await serverCalls.getElementTable();
 
-    //             if (data) {
-    //                 setLoading(false);
-    //             }
+                if (data) {
+                    setLoading(false);
+                }
                 
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //             setLoading(false); 
-    //         }
-    //     };
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false); 
+            }
+        };
 
-    //     fetchData(); 
-    // }, []);
+        fetchData(); 
+    }, []);
 
-
-
-    // DIDNT WORK - SPINNER NOT DISPLAYED
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         setLoading(true);
-    //         try {
-    //             const data = await useGetElementTable();
-    //             setLoading(false)
-    //         } catch (error) {
-    //             console.error('Failed to fetch data:', error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-    //     fetchData();
-    //     return () => {
-
-    //     };
-    // }, []);
-
-    
 
     return (
         <div className='bigContainer'>
@@ -187,13 +148,13 @@ export const Table = () => {
             <NavBar />
             <h1 className="title">Periodic Table</h1>
             <div className = "periodic-table">
-                {/* {loading ? (
+                {loading ? (
                     <div className='loader'>
                     <CircularProgress className='progress' />
                     <div>Loading table...</div>
                 </div>
                 ) : (
-                <>  */}
+                <> 
                 { elementTableData.map((element) => (
                 <div className = "element" key={element.name} style={{
                     gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
@@ -206,7 +167,7 @@ export const Table = () => {
                     
                 </div> 
                 ))}
-            {/* </>)}  */}
+            </>)} 
                 
             </div>
             <Dialog open={studyOpen} onClose={() => {setStudyOpen(false)}}>
@@ -260,3 +221,5 @@ export const Table = () => {
 //             setMessageType('error')
 //             setOpen(true)
 //         })
+
+
