@@ -1,17 +1,30 @@
 import * as _React from 'react';
 import './quiz.css';
 import { NavBar } from '../sharedComponents';
+import { ElementProps, useGetElementTable } from '../../customHooks';
+import { Grid } from '@mui/material';
+import { useState } from 'react';
 
 
 export const Quiz = () => {
+
+    const { elementTableData } = useGetElementTable();
+    const [ flip, setFlip ] = useState(false)
+
+    console.log(elementTableData)
+
     return (
         <div>
             <NavBar />
-            <h1 className="quizPage"style={{ marginTop: '50px'}}>The Quiz Page (Under construction...)
-            <span className='quiz' id='q'>Q</span>
-            <span className='quiz' id='u'>u</span>
-            <span className='quiz' id='i'>i</span>
-            <span className='quiz' id='z'>z</span></h1>
+            <Grid className="card-grid">
+            { elementTableData.map((flashcard) => (
+                <div className = "flashcard" key={flashcard.name} onClick={() => setFlip(!flip)}>
+                    {flip ? flashcard.name : flashcard.symbol}
+                    
+                </div>
+                    
+            ))}
+            </Grid>
         </div>
 
     )
