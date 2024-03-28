@@ -7,106 +7,38 @@
 }
 
 
-.quizPage {
-    position: relative;
+.card {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
-    background: black;
-    color: white;
-    font-size: 3vw;
-}
-
-
-.quiz {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    min-height: 100vh;
     position: relative;
-    font-size: 3vw;
-
-
+    border-radius: .25rem;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
+    height: 100px;
+    width: 100px;
+    transform: perspective(1000px) rotateY(var(--flip-y, 0)) translateY(var(--hover-y, 0));
+    transform-style: preserve-3d;
+    transition: 150ms;
+    cursor: pointer;
 }
 
-#q {
-    margin-left: 9px;
-    position: fixed;
-    top: -100%;
-    transform: translateY(100vh);
-    animation: moveUp 1s forwards 1;
-    /* animation-iteration-count: infinite; */
+.card.flip {
+    --flip-y: 180deg;
+}
+
+.card:hover {
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);
+    --hover-y: -2px;
+}
+
+.card .front,
+.card .back {
+    position: absolute;
+    padding: 1rem;
+    backface-visibility: hidden;
     
 }
 
-#u {
-    margin-left: 9px;
-    position: fixed;
-    left: 100%;
-    transform: translateX(100vh);
-    animation: moveLeft 1s forwards 1;
-    /* animation-iteration-count: infinite; */
-    
-}
-
-
-#i {
-    margin-left: 9px;
-    position: fixed;
-    right: 100%;
-    transform: translateX(100vh);
-    animation: moveRight 1s forwards 1;
-    /* animation-iteration-count: infinite; */
-    
-}
-
-
-#z {
-    margin-right: 9px;
-    position: fixed;
-    bottom: -100%;
-    transform: translateY(100vh);
-    animation: moveDown 1s forwards 1;
-    /* animation-iteration-count: infinite; */
-}
-
-@keyframes moveUp {
-    0% {
-        transform: translateY(100%);
-    }
-    100%{
-        transform: translateY(0)
-    }
-    
-}
-
-@keyframes moveLeft {
-    from {
-        transform: translateX(-2500%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes moveRight {
-    from {
-        transform: translateX(4600%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes moveDown {
-    0% {
-        transform: translateY(-90%);
-    }
-    100%{
-        transform: translateY(0)
-    }
-    
+.card .back {
+    transform: rotateY(180deg);
 }
