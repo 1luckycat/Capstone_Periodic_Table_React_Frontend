@@ -6,12 +6,16 @@ import { useState, useEffect } from 'react';
 import { serverCalls } from '../../api';
 
 
+interface Element {
+    symbol: string;
+    name: string;
+}
+
 export const Quiz = () => {
 
     const { elementTableData } = useGetElementTable();
-    const [ flip, setFlip ] = useState(false)
-    // const [ flashcards, setFlashcards ] = useState(elementTableData)
     const [ loading, setLoading ] = useState(true)
+    const [ flippedIndex, setFlippedIndex ] = useState<number | null>(null)
 
     console.log(elementTableData)
 
@@ -21,7 +25,7 @@ export const Quiz = () => {
                 
                 setLoading(true);
                 
-                const data = await serverCalls.getElementTable();
+                const data: Element[] = await serverCalls.getElementTable();
 
                 if (data) {
                     setLoading(false);
@@ -37,11 +41,38 @@ export const Quiz = () => {
     }, []);
 
 
+    const handleFlip = (index: number) => {
+        setFlippedIndex(index === flippedIndex ? null : index);
+    };
+
+
     return (
         <div>
             <NavBar />
-            <div className={`flashcard-container ${flip ? 'flip' : ''}`}
-            onClick={() => setFlip(!flip)}
+            <div className="flashcard-container">
+                {elementTableData.map((flashcard: Element, index: number) => (
+                    <div
+                        className={`flashcard ${flippedIndex === index ? 'flip' : ''}`}
+                        key={index}
+                        onClick={() => handleFlip(index)}
+                    >
+                        <div className="front">
+                            <div className="flashcards-symbol">{flashcard.symbol}</div>
+                        </div>
+                        <div className="back">
+                            <div className="flashcards-name">{flashcard.name}</div>
+                        </div>
+                    </div>
+                ))}
+
+
+
+
+
+            {/* MOST RECENT WORKING, BUT FLIPS EVERYTHING */}
+            {/* <div className={`flashcard-container ${flip ? 'flip' : ''}`}
+            key = {index}
+            onClick={() => handleFlip(index)}
             >
                 {elementTableData.map((flashcard, index) => (
                     <div className='flashcard' key={index}>
@@ -52,7 +83,7 @@ export const Quiz = () => {
                             <div className='flashcards-name'>{flashcard.name}</div>
                         </div>
                     </div>
-                ))}
+                ))} */}
 
 
                 {/* THIS WORKS BEST BUT STILL FLIPS ALL ELEMENTS */}
@@ -77,6 +108,9 @@ export const Quiz = () => {
                 </div>
                     
             ))} */}
+
+
+
             </div>
         </div>
 

@@ -115,7 +115,7 @@ export const NavBar = () => {
             onClick: myAuth === 'true' ? () => navigate('/study') : () => {}
         },
         {
-            text: myAuth === 'true' ? 'Quiz' : "",
+            text: myAuth === 'true' ? 'Flashcards' : "",
             icon: myAuth === 'true' ? <QuizIcon /> : "",
             onClick: myAuth === 'true' ? () => navigate('/quiz') : () => {}
         }
