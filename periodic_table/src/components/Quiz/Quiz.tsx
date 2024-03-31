@@ -49,6 +49,7 @@ export const Quiz = () => {
     return (
         <div>
             <NavBar />
+            <h1 className='cardTitle'>Flashcards</h1>
             <div className="flashcard-container">
                 {elementTableData.map((flashcard: Element, index: number) => (
                     <div
