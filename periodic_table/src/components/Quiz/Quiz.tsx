@@ -16,6 +16,7 @@ export const Quiz = () => {
     const { elementTableData } = useGetElementTable();
     const [ loading, setLoading ] = useState(true)
     const [ flippedIndex, setFlippedIndex ] = useState<number | null>(null)
+    const [ displayRandom, setDisplayRandom ] = useState<Element[]>([]);
 
     console.log(elementTableData)
 
@@ -29,6 +30,7 @@ export const Quiz = () => {
 
                 if (data) {
                     setLoading(false);
+                    setDisplayRandom(shuffleArray(data));    // can add setDisplayRandom(shuffleArray(data).slice(0, 50)); here to only get random 50 elements to display
                 }
                 
             } catch (error) {
@@ -46,12 +48,30 @@ export const Quiz = () => {
     };
 
 
+    const shuffleArray = (array: any[]) => {
+        const shuffledArray = [...array];
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+        }
+
+        return shuffledArray;
+    };
+
+
+    const handleRandom = () => {
+        setDisplayRandom(shuffleArray(elementTableData));  // can add setDisplayRandom(shuffleArray(elementTableData).slice(0, 50)); here to only get random 50 elements to display
+        setFlippedIndex(null);
+    };
+
+
     return (
         <div>
             <NavBar />
             <h1 className='cardTitle'>Flashcards</h1>
+            <button onClick={handleRandom}>Shuffle Elements</button>
             <div className="flashcard-container">
-                {elementTableData.map((flashcard: Element, index: number) => (
+                {displayRandom.map((flashcard: Element, index: number) => (
                     <div
                         className={`flashcard ${flippedIndex === index ? 'flip' : ''}`}
                         key={index}
@@ -65,52 +85,6 @@ export const Quiz = () => {
                         </div>
                     </div>
                 ))}
-
-
-
-
-
-            {/* MOST RECENT WORKING, BUT FLIPS EVERYTHING */}
-            {/* <div className={`flashcard-container ${flip ? 'flip' : ''}`}
-            key = {index}
-            onClick={() => handleFlip(index)}
-            >
-                {elementTableData.map((flashcard, index) => (
-                    <div className='flashcard' key={index}>
-                        <div className='front'>
-                            <div className='flashcard-symbol'>{flashcard.symbol}</div>
-                        </div>
-                        <div className='back'>
-                            <div className='flashcards-name'>{flashcard.name}</div>
-                        </div>
-                    </div>
-                ))} */}
-
-
-                {/* THIS WORKS BEST BUT STILL FLIPS ALL ELEMENTS */}
-                {/* <div className='front'>
-                    
-                    { elementTableData.map((flashcards) => {
-                        return <div className = 'flashcards-symbol'>{flashcards.symbol}</div>
-                    })}
-                </div>
-                <div className='back'>
-                    { elementTableData.map((flashcards) => {
-                        return <div className = 'flashcards-name'>{flashcards.name}</div>
-                    })}</div> */}
-
-
-
-            {/*  THIS WORKS WITH FLIP, BUT FLIPS ALL ELEMENTS */}
-            {/* { elementTableData.map((flashcard) => (
-                <div className = "flashcard" key={flashcard.name}>
-                    {flip ? flashcard.name : flashcard.symbol}
-                    
-                </div>
-                    
-            ))} */}
-
-
 
             </div>
         </div>

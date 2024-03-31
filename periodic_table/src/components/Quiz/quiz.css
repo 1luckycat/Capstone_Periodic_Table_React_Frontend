@@ -29,8 +29,8 @@
     cursor: pointer;
     margin: 20px;
     font-size: larger;
-    
 }
+
 
 .flashcard.flip {
     --rotate-y: 180deg;
