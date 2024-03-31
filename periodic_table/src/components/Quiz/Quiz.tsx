@@ -4,6 +4,7 @@ import { NavBar } from '../sharedComponents';
 import { useGetElementTable } from '../../customHooks';
 import { useState, useEffect } from 'react';
 import { serverCalls } from '../../api';
+import { CircularProgress } from '@mui/material';
 
 
 interface Element {
@@ -73,6 +74,13 @@ export const Quiz = () => {
             <button className='shuffle' onClick={handleRandom}>Shuffle Elements</button>
             </div>
             <div className="flashcard-container">
+                {loading ? (
+                    <div className='flashLoader'>
+                    <CircularProgress className='flashProgress' />
+                    <div>Loading Flashcards...</div>
+                </div>
+                ) : (
+                <> 
                 {displayRandom.map((flashcard: Element, index: number) => (
                     <div
                         className={`flashcard ${flippedIndex === index ? 'flip' : ''}`}
@@ -87,6 +95,7 @@ export const Quiz = () => {
                         </div>
                     </div>
                 ))}
+                </>)} 
 
             </div>
         </div>
