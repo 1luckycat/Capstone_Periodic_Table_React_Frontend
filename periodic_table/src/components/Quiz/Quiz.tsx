@@ -66,10 +66,12 @@ export const Quiz = () => {
 
 
     return (
-        <div>
+        <div className='mainPage'>
             <NavBar />
+            <div className='top'>
             <h1 className='cardTitle'>Flashcards</h1>
-            <button onClick={handleRandom}>Shuffle Elements</button>
+            <button className='shuffle' onClick={handleRandom}>Shuffle Elements</button>
+            </div>
             <div className="flashcard-container">
                 {displayRandom.map((flashcard: Element, index: number) => (
                     <div

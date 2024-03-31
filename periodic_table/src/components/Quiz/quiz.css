@@ -6,11 +6,41 @@
     font-family: "Poppins", sans-serif;
 }
 
-.cardTitle {
-    margin-top: 80px;
+.mainPage {
+    background: linear-gradient(to right, rgb(255, 233, 218), rgb(252, 179, 145));
+}
+
+.top {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    margin-top: 80px;
+    align-items: center;
+    margin-bottom: 30px;
+    
+}
+
+.cardTitle {
     font-size: 40px;
+}
+
+.shuffle {
+    height: 40px;
+    width: 150px;
+    border-radius: 4px;
+    background-color: rgb(223, 50, 27);
+    margin-top: 30px;
+    font-size: large;
+    color: white;
+    border-color: white;
+    transform: translateY(var(--translate-y, 0));
+}
+
+.shuffle:hover {
+    cursor: pointer;
+    --translate-y: -2px;
+    color: rgb(223, 50, 27);
+    background-color: white;
 }
 
 .flashcard {
@@ -49,7 +79,7 @@
 }
 
 .flashcard:hover {
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .5);
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .7);
     --translate-y: -5px;
 }
 
