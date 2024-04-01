@@ -1,6 +1,6 @@
 import * as _React from 'react';
 import './study.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 // import { getDatabase, ref } from 'firebase/database';
 import {
@@ -162,6 +162,7 @@ export const Study = () => {
     const [ element_id, setElementId ] = useState<string>();
     // const userId = localStorage.getItem('uuid');
     // const elementRef = ref(db, `study/${userId}/`);
+    const [ loading, setLoading ] = useState(true)
 
     console.log(elementData)
     
@@ -186,6 +187,28 @@ export const Study = () => {
 
 
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                
+                setLoading(true);
+                
+                const data = await serverCalls.getElement();
+
+                if (data) {
+                    setLoading(false);
+                }
+                
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false); 
+            }
+        };
+
+        fetchData(); 
+    }, []);
+
+
     return (
 
         <Box className='page' sx={ studyStyles.main }>
@@ -196,6 +219,12 @@ export const Study = () => {
                 Your Study Guide
             </Typography>
             <Grid className="container" container spacing={3} sx={ studyStyles.grid }>
+            {loading ? (
+                    <div className='studyLoader'>
+                    <div>Loading Study Guide...</div>
+                </div>
+                ) : (
+                <> 
                 { elementData?.map(( element: ElementProps, index: number ) => (
                     <Grid item key={index} >
                         <Card className='card' sx={ studyStyles.card }>
@@ -245,6 +274,7 @@ export const Study = () => {
                     </Grid>
 
                 ))}
+                </>)} 
             </Grid>
             <Dialog open={notesOpen} onClose={() => setNotesOpen(false)}>
             <DialogContent>

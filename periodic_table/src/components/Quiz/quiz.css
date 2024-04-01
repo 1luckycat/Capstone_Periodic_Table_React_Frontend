@@ -8,8 +8,8 @@
 
 .mainPage {
     background: linear-gradient(to right, rgb(255, 233, 218), rgb(252, 179, 145));
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
 }
 
 .top {
@@ -101,5 +101,7 @@
     align-items: center;
     font-size: larger;
     gap: 15px;
-    margin-top: 70px;
+    height: 100vh;
+    width: 100vw;
+    margin-top: -225px;
 }

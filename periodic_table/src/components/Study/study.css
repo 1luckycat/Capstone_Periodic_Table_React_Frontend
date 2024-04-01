@@ -29,7 +29,6 @@
     
 }
 
-
 .elementSymbol span {
     display: inline-block;
     font-family: "Poppins", sans-serif;
@@ -43,14 +42,12 @@
     opacity: 20%;
 }
 
-
 @keyframes fall {
     100%{
         transform: translateY(80vh);
     }
     
 }
-
 
 /* Code for background color */
 :root {
@@ -72,6 +69,18 @@
     color: white;
 }
 
+.studyLoader {
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+    gap: 15px;
+    height: 100vh;
+    width: 100vw;
+    margin-top: -225px;
+
+}
 
 /* Code for every element falling down differently */
 .elementSymbol span:nth-child(1){
