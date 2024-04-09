@@ -172,6 +172,9 @@ const SignIn = () => {
                     <InputPassword {...register('password')} name='password' placeholder='Enter Password Here' />
                 </Box>
                 <Button type='submit'>Submit</Button>
+                <br />
+                <Typography variant='h6'>Demo Account:  demo_account@gmail.com</Typography>
+                <Typography variant='h6'>Password:  demo1234</Typography>
             </form>
             <Snackbar
                 open = {open}
@@ -294,6 +297,13 @@ export const Auth = (props: Props) => {
                             Email Sign Up
                         </Button>
                     </Stack>
+                    <br />
+                    <Typography variant = 'h6' color='black' fontWeight='500'>
+                        Demo Account:  demo_account@gmail.com
+                    </Typography>
+                    <Typography variant = 'h6' color='black' fontWeight='500'>
+                        Password:  demo1234
+                    </Typography>
                 </Stack>
                 <Dialog open={open} onClose = { () => setOpen(false) }>
                     <DialogContent>
