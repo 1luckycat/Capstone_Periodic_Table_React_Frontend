@@ -297,7 +297,13 @@ export const Auth = (props: Props) => {
                             Email Sign Up
                         </Button>
                     </Stack>
-                    <br />
+                </Stack>
+                <br />
+                <Stack
+                    direction='column'
+                    alignItems='center'
+                    textAlign='center'
+                >
                     <Typography variant = 'h6' color='black' fontWeight='500'>
                         Demo Account:  demo_account@gmail.com
                     </Typography>
