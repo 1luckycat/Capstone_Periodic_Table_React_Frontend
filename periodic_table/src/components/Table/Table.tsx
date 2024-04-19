@@ -148,6 +148,7 @@ export const Table = () => {
         <div>
             <NavBar />
             <h1 className="title">Periodic Table</h1>
+            <h4>(Changed API - Now Under Construction)</h4>
             <div className = "periodic-table">
                 {loading ? (
                     <div className='loader'>
