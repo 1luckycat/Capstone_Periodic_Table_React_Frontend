@@ -35,7 +35,7 @@
     font-size: .75vw;
     border-style: solid;
     position: relative;
-    transform: translateY(-150vh);
+    transform: translateY(-250vh);
     animation: fall 30.5s;
     animation-iteration-count: infinite;
     padding: 10px 10px;
