@@ -127,17 +127,3 @@
     }
 }
 
-
-h4 {
-    margin-top: -350px;
-    margin-left: -500px;
-    font-size: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: slideInLeft cubic-bezier(0.42, 0, 0.68, 1.52) 2s 1;
-    position: absolute;
-    background: linear-gradient(to bottom, black, red);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}

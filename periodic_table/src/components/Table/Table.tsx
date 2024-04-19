@@ -93,17 +93,21 @@ const AddToStudy = (study: AddElementProps) => {
 
 // colors for different element category
 export const colorMap: ColorMap = {
-    "nonmetal": "#74BBFB",
+    "diatomic nonmetal": "#74BBFB",
     "noble gas": "#7B68EE",
     "alkaline earth metal": "#008000",
     "alkali metal": "#15F2FD",
     "transition metal": "#CC0002",
-    "metal": "#A1ECA7",
-    "halogen": "#997B5E",
-    "actinoid": "#E73895",
-    lanthanoid: "#FEE502",
+    "polyatomic nonmetal": "#A1ECA7",
+    "actinide": "#E73895",
+    lanthanide: "#FEE502",
     metalloid: "#FF681F", 
-    "post-transition metal": "#974e0d"
+    "post-transition metal": "#974e0d",
+    "unknown, probably transition metal": "#997B5E",
+    "unknown, probably post-transition metal": "#487E4E",
+    "unknown, but predicted to be an alkali metal": "#638E24",
+    "unknown, predicted to be noble gas": "#123456",
+    "unknown, probably metalloid": "#983742"
 };
 
 interface ColorMap {
@@ -148,7 +152,6 @@ export const Table = () => {
         <div>
             <NavBar />
             <h1 className="title">Periodic Table</h1>
-            <h4>(Changed API - Now Under Construction)</h4>
             <div className = "periodic-table">
                 {loading ? (
                     <div className='loader'>
@@ -159,7 +162,8 @@ export const Table = () => {
                 <> 
                 { elementTableData.map((element) => (
                 <div className = "element" key={element.name} style={{
-                    gridColumn: element.xpos, gridRow: element.ypos, borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
+                    gridColumn: element.xpos, gridRow: element.ypos, 
+                    borderColor: colorMap[element.category], backgroundColor: colorMap[element.category]}} 
                     onClick={()=> {setStudyOpen(true); setCurrentStudy(element as ElementProps)}}
                     
                     > 
@@ -184,115 +188,6 @@ export const Table = () => {
         </div>
     )
 }
-
-
-
-// interface ElementData {
-//     atomicMass: string;
-//     atomicNumber: string;
-//     block: string;
-//     category: string;
-//     name: string;
-//     group: string;
-//     symbol: string;
-
-//     // Add other properties as needed
-// }
-// export const Table = () => {
-//     const [elementTableData, setElementTableData] = useState<ElementData[]>([]);
-//     const [loading, setLoading] = useState(true);
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 setLoading(true);
-//                 const data = await serverCalls.getElementTable();
-//                 console.log(data)
-//                 setElementTableData(data);
-//                 setLoading(false);
-//             } catch (error) {
-//                 console.error('Error fetching data:', error);
-//                 setLoading(false);
-//             }
-//         };
-
-//         fetchData();
-//     }, []);
-
-//     const renderElements = () => {
-//         const grid = [];
-//         for (let row = 0; row < 10; row++) {
-//             for (let col = 0; col < 18; col++) {
-//                 const atomicNumber = row * 18 + col + 1;
-//                 const element = elementTableData.find(el => Number(el.atomicNumber) === atomicNumber);
-//                 if (element) {
-//                     grid.push(
-//                         <div
-//                             key={element.atomicNumber}
-//                             className="element"
-//                             style={{
-//                                 gridColumn: col + 1,
-//                                 gridRow: row + 1,
-//                                 backgroundColor: colorMap[element.category],
-//                             }}
-//                         >
-//                             <small className="number">{element.atomicNumber}</small>
-//                             <strong className="symbol">{element.symbol}</strong>
-//                             <small className='name'>{element.name}</small>
-//                         </div>
-//                     );
-//                 }
-//             }
-//         }
-//         return grid;
-//     };
-
-//     const renderElementsWithoutGroupOrBlock = () => {
-//         return elementTableData
-//             .filter(el => !el.group || el.group === 'f') // Filter elements without group or block
-//             .map((element, index) => (
-//                 <div
-//                     key={index}
-//                     className="element"
-//                     style={{
-//                         gridColumn: 'auto',
-//                         gridRow: 'auto',
-//                         backgroundColor: 'gray', // You can adjust the styling
-//                     }}
-//                 >
-//                     <small className="number">{element.atomicNumber}</small>
-//                     <strong className="symbol">{element.symbol}</strong>
-//                     <small className='name'>{element.name}</small>
-//                 </div>
-//             ));
-//     };
-
-//     return (
-//         <div className='bigContainer'>
-//             {loading ? (
-//                 <div className='loader'>
-//                     <CircularProgress className='progress' />
-//                     <div>Loading table...</div>
-//                 </div>
-//             ) : (
-//                 <div className="periodic-table">
-//                     {renderElements()}
-//                     <div className="no-group-elements">
-//                         <h2>No Group/Block Elements</h2>
-//                         {renderElementsWithoutGroupOrBlock()}
-//                     </div>
-//                 </div>
-//             )}
-//         </div>
-//     );
-// };
-
-
-
-
-
-
-
 
 
 
